@@ -1,7 +1,7 @@
 //Find
-int			Chat(LPCHARACTER ch, const char * data, size_t uiBytes);
+		int			Chat(LPCHARACTER ch, const char * data, size_t uiBytes);
 
 ///Add
-#ifdef ENABLE_CHECK_INSULT
+#ifdef AUTO_BLOCK_CHAT
 		void 		BlockChatInsult(LPCHARACTER ch, const char * data);
 #endif

@@ -2,7 +2,7 @@
 	HEADER_CG_QUEST_CONFIRM                     = 31,
 	
 ///Add
-#ifdef ENABLE_CHECK_INSULT
+#ifdef AUTO_BLOCK_CHAT
 	HEADER_CG_INSULT_BLOCK						= 35,
 #endif
 
@@ -14,8 +14,8 @@ typedef struct command_item_pickup
 } TPacketCGItemPickUp;
 
 ///Add
-#ifdef ENABLE_CHECK_INSULT
-typedef struct block_insult
+#ifdef AUTO_BLOCK_CHAT
+typedef struct commond_block_insult
 {
 	BYTE	header;
 } TPacketCGChatInsult;

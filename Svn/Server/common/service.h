@@ -1,2 +1,2 @@
-///Add anywhere
-#define ENABLE_CHECK_INSULT
+///Add
+#define AUTO_BLOCK_CHAT

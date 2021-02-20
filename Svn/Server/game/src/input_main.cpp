@@ -6,14 +6,23 @@ void CInputMain::ItemUse(LPCHARACTER ch, const char * data)
 }
 
 ///Add
-#ifdef ENABLE_CHECK_INSULT
-void CInputMain::BlockChatInsult(LPCHARACTER ch, const char * data)
+#ifdef AUTO_BLOCK_CHAT
+void CInputMain::BlockChatInsult(LPCHARACTER ch, const char* data)
 {
-    long bantime = 60 * 1; // 1 minute
-    // long bantime = 60 * 60; // 1 hour
-    // long bantime = 60 * 60 * 24; // 1 day
-	if (ch)
-		ch->AddAffect(AFFECT_BLOCK_CHAT, POINT_NONE, 0, AFF_NONE, bantime, 0, true);
+	if (!ch)
+		return;
+
+	if (ch->FindAffect(AFFECT_BLOCK_CHAT))
+		return;
+	
+	if (ch->IsGM())
+		return;
+
+	const long lBlockDuration = 60;
+
+	ch->AddAffect(AFFECT_BLOCK_CHAT, POINT_NONE, 0, AFF_NONE, lBlockDuration, 0, true);
+
+	sys_log(0, "AUTO BLOCK CHAT %s %d", ch->GetName(), lBlockDuration);
 }
 #endif
 
@@ -24,9 +33,9 @@ void CInputMain::BlockChatInsult(LPCHARACTER ch, const char * data)
 			break;
 			
 ///Add
-	#ifdef ENABLE_CHECK_INSULT
+#ifdef AUTO_BLOCK_CHAT
 		case HEADER_CG_INSULT_BLOCK:
             if (!ch->IsObserverMode())
                 BlockChatInsult(ch, c_pData);
         break;
-	#endif
+#endif

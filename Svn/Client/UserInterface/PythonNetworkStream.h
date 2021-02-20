@@ -2,6 +2,6 @@
 		bool SendItemUsePacket(TItemPos pos);
 
 ///Add
-#ifdef ENABLE_CHECK_INSULT
-		bool BLOCK_INSULT();
+#ifdef AUTO_BLOCK_CHAT
+		bool SendInsultBanPacket();
 #endif

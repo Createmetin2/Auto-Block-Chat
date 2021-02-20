@@ -12,16 +12,15 @@
 					{
 						if (false == pkInstChatter->IsNPC() && false == pkInstChatter->IsEnemy())
 						{
-							#ifdef ENABLE_CHECK_INSULT
-							CPythonNetworkStream& paket=CPythonNetworkStream::Instance();
-							if (paket.IsInsultIn(p))
+#ifdef AUTO_BLOCK_CHAT
+							if (CPythonNetworkStream::Instance().IsInsultIn(p))
 							{
-								paket.BLOCK_INSULT();
-								return false;
+								CPythonNetworkStream::Instance().SendInsultBanPacket();
+								return true;
 							}
-							#else
+#else
 							__FilterInsult(p, strlen(p));
-							#endif
+#endif
 						}
 					}
 	
@@ -34,19 +33,16 @@
 ///Change
 			if (p)
 			{
-				if (m_isEnableChatInsultFilter)
-				#ifdef ENABLE_CHECK_INSULT
+#ifdef AUTO_BLOCK_CHAT
+				if (m_isEnableChatInsultFilter && CPythonNetworkStream::Instance().IsInsultIn(p))
 				{
-					CPythonNetworkStream& paket=CPythonNetworkStream::Instance();
-					if (paket.IsInsultIn(p))
-					{
-						paket.BLOCK_INSULT();
-						return false;
-					}
+					CPythonNetworkStream::Instance().SendInsultBanPacket();
+					return true;
 				}
-				#else
+#else
+				if (m_isEnableChatInsultFilter)
 					__FilterInsult(p, strlen(p));
-				#endif	
+#endif
 			}
 
 //Find
@@ -68,8 +64,8 @@ bool CPythonNetworkStream::SendQuestConfirmPacket(BYTE byAnswer, DWORD dwPID)
 }
 
 ///Add
-#ifdef ENABLE_CHECK_INSULT
-bool CPythonNetworkStream::BLOCK_INSULT()
+#ifdef AUTO_BLOCK_CHAT
+bool CPythonNetworkStream::SendInsultBanPacket()
 {
 	if (!__CanActMainInstance())
 		return true;
@@ -79,7 +75,7 @@ bool CPythonNetworkStream::BLOCK_INSULT()
 
 	if (!Send(sizeof(kPacket), &kPacket))
 	{
-		Tracen("BLOCK_INSULT Error");
+		Tracen("SendInsultBanPacket Error");
 		return false;
 	}
 
