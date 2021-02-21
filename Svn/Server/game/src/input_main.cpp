@@ -34,7 +34,7 @@ void CInputMain::BlockChatInsult(LPCHARACTER ch, const char* data)
 			
 ///Add
 #ifdef AUTO_BLOCK_CHAT
-		case HEADER_CG_INSULT_BLOCK:
+	case HEADER_CG_INSULT_BLOCK:
             if (!ch->IsObserverMode())
                 BlockChatInsult(ch, c_pData);
         break;
